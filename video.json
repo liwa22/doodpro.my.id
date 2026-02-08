@@ -1,4 +1,16 @@
 {
-  "id": "abc123",
-  "cdn": "https://cdn.videy.co/EJglACkL1.mp4"
+  "videos": [
+    {
+      "id": "abc123",
+      "cdn": "https://cdn.videy.co/9ctvYZlO1.mp4"
+    },
+    {
+      "id": "xyz999",
+      "cdn": "https://cdn.videy.co/h5YR9NNe1.mp4"
+    },
+    {
+      "id": "test777",
+      "cdn": "https://cdn.videy.co/test777.mp4"
+    }
+  ]
 }
