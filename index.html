@@ -16,24 +16,27 @@
     video {
       width: 100%;
       height: 100%;
-      background: black;
       object-fit: contain;
+      background: black;
     }
   </style>
 </head>
 <body>
 
-<video id="player" controls autoplay></video>
+<video id="player" autoplay controls></video>
 
 <script>
-const DOMAIN = window.location.origin;
+const pathId = window.location.pathname.replace('/', '');
 
-fetch('video.json')
+fetch('/video.json')
   .then(res => res.json())
   .then(data => {
-    // contoh hasil publish:
-    // https://username.github.io/repo/?id=abc123
-    const videoUrl = data.cdn + '?ref=' + DOMAIN + '&id=' + data.id;
+    if (pathId !== data.id) {
+      document.body.innerHTML = '';
+      return;
+    }
+
+    const videoUrl = data.cdn + '?ref=' + window.location.origin;
     document.getElementById('player').src = videoUrl;
   });
 </script>
