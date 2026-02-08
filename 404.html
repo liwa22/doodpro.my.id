@@ -2,11 +2,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Redirect</title>
+</head>
+<body>
+
 <script>
-const id = location.pathname.replace('/','');
-sessionStorage.setItem('vid', id);
+var id = location.pathname.replace(/\//g, '');
+if (id) {
+  sessionStorage.setItem('vid', id);
+}
 location.replace('/');
 </script>
-</head>
-<body></body>
+
+</body>
 </html>
