@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Videy Stream</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Videy Stream</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-    }
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: black;
-    }
-  </style>
+<style>
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:black;
+}
+video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:black;
+}
+</style>
 </head>
 <body>
 
-<video id="player" autoplay controls></video>
+<video id="player" controls muted playsinline></video>
 
 <script>
-const pathId = window.location.pathname.replace('/', '');
+const id = sessionStorage.getItem('vid');
 
-fetch('/video.json')
-  .then(res => res.json())
-  .then(data => {
-    if (pathId !== data.id) {
-      document.body.innerHTML = '';
-      return;
-    }
+if (!id) {
+  document.body.innerHTML = '';
+} else {
+  fetch('./video.json')   // ⬅️ PATH RELATIF (PENTING)
+    .then(r => r.json())
+    .then(d => {
+      if (d.id !== id) return;
 
-    const videoUrl = data.cdn + '?ref=' + window.location.origin;
-    document.getElementById('player').src = videoUrl;
-  });
+      const player = document.getElementById('player');
+      player.src = d.cdn + '?ref=' + location.origin;
+      player.play().catch(()=>{});
+    });
+}
 </script>
 
 </body>
