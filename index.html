@@ -4,20 +4,9 @@
 <meta charset="UTF-8">
 <title>Videy Stream</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  background:black;
-}
-video{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  background:black;
-}
+html,body{margin:0;width:100%;height:100%;background:black}
+video{width:100%;height:100%;object-fit:contain}
 </style>
 </head>
 <body>
@@ -26,20 +15,18 @@ video{
 
 <script>
 const id = sessionStorage.getItem('vid');
+if (!id) document.body.innerHTML = '';
 
-if (!id) {
-  document.body.innerHTML = '';
-} else {
-  fetch('./video.json')   // ⬅️ PATH RELATIF (PENTING)
-    .then(r => r.json())
-    .then(d => {
-      if (d.id !== id) return;
+fetch('./videos.json')
+  .then(r => r.json())
+  .then(data => {
+    const video = data.videos.find(v => v.id === id);
+    if (!video) return;
 
-      const player = document.getElementById('player');
-      player.src = d.cdn + '?ref=' + location.origin;
-      player.play().catch(()=>{});
-    });
-}
+    const player = document.getElementById('player');
+    player.src = video.cdn + '?ref=' + location.origin + '&id=' + id;
+    player.play().catch(()=>{});
+  });
 </script>
 
 </body>
