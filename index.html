@@ -4,29 +4,77 @@
 <meta charset="UTF-8">
 <title>Videy Stream</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-html,body{margin:0;width:100%;height:100%;background:black}
-video{width:100%;height:100%;object-fit:contain}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:black;
+  overflow:hidden;
+}
+
+/* video */
+video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:black;
+}
+
+/* lapisan iklan transparan */
+#ad-layer{
+  position:fixed;
+  inset:0;
+  z-index:10;
+  background:rgba(0,0,0,0); /* transparan */
+}
 </style>
 </head>
 <body>
 
-<video id="player" controls muted playsinline></video>
+<video
+  id="player"
+  muted
+  autoplay
+  playsinline
+  controls
+  controlsList="nodownload noplaybackrate"
+  disablePictureInPicture
+></video>
+
+<!-- LAPISAN IKLAN -->
+<div id="ad-layer"></div>
 
 <script>
+// ====== BLOK KLIK KANAN ======
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// ====== AMBIL ID DARI ROUTER ======
 const id = sessionStorage.getItem('vid');
-if (!id) document.body.innerHTML = '';
+if (!id) document.body.innerHTML='';
 
+// ====== LOAD VIDEO ======
 fetch('./videos.json')
-  .then(r => r.json())
-  .then(data => {
-    const video = data.videos.find(v => v.id === id);
-    if (!video) return;
+.then(r => r.json())
+.then(data => {
+  const video = data.videos.find(v => v.id === id);
+  if (!video) return;
 
-    const player = document.getElementById('player');
-    player.src = video.cdn + '?ref=' + location.origin + '&id=' + id;
-    player.play().catch(()=>{});
-  });
+  const player = document.getElementById('player');
+  player.src = video.cdn + '?ref=' + location.origin + '&id=' + id;
+  player.play().catch(()=>{});
+});
+
+// ====== IKLAN MONETAG ======
+const DIRECTLINK = "https://javtsunami.com/nacr-648.html"; // ganti
+
+let clicked = false;
+document.getElementById('ad-layer').addEventListener('click', () => {
+  if (clicked) return;
+  clicked = true;
+  window.open(DIRECTLINK, '_blank');
+});
 </script>
 
 </body>
